@@ -16,4 +16,4 @@ RUN echo "export PATH=$PATH:/usr/local/bin" >> /root/.bashrc && source /root/.ba
 
 ENV PATH=$PATH:/usr/local/bin
 
-RUN pip install awscli --upgrade --user; pip install awscli boto3 -U --ignore-installed six
+RUN pip install awscli --upgrade --user; pip install awscli boto3 -U --ignore-installed six; python -m pip install boto
