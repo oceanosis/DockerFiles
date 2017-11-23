@@ -1,0 +1,19 @@
+# Dockerfile based on the latest CentOS 7 image - Ansible
+FROM centos:latest
+MAINTAINER oceanosis <dumluufuk@gmail.com>
+
+RUN yum update; yum upgrade -y ; yum install gcc curl git python python-devel python-pip make -y; yum install python-mysqldb python-jinja2 python-paramiko PyYAML MySQL-python -y
+
+RUN curl -O https://bootstrap.pypa.io/get-pip.py; python get-pip.py --user
+
+ENV PATH=~/.local/bin:$PATH
+
+RUN echo "export PATH=$PATH:~/.local/bin" >> /root/.bashrc && source /root/.bashrc ; pip install setuptools;
+
+RUN cd /usr/local/src; git clone git://github.com/ansible/ansible.git; cd ansible ; git checkout -b stable-2.0 origin/stable-2.0 ; git submodule update --init --recursive ; make install
+
+RUN echo "export PATH=$PATH:/usr/local/bin" >> /root/.bashrc && source /root/.bashrc
+
+ENV PATH=$PATH:/usr/local/bin
+
+RUN pip install awscli --upgrade --user; pip install awscli boto3 -U --ignore-installed six
